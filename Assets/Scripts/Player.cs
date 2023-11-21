@@ -4,15 +4,29 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    private Rigidbody2D rig;
+    public bool launching;
+
+
+    private void Awake()
     {
-        
+        rig = GetComponent<Rigidbody2D>();
+        rig.isKinematic = true;
+    }
+    private void Update()
+    {
+        if(launching && rig.IsSleeping())
+        {
+            // next player
+            Destroy(this.gameObject);
+        }
     }
 
-    // Update is called once per frame
-    void Update()
+    public void Launch (Vector2 direction)
     {
-        
+        rig.isKinematic = false;
+        // TODO: make speed dependent on draggin the mouse
+        rig.AddForce(direction * 5, ForceMode2D.Impulse);
+        launching = true;
     }
 }
