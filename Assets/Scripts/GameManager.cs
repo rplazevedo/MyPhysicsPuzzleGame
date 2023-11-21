@@ -28,7 +28,12 @@ public class GameManager : MonoBehaviour
     
     public void PlayerFinished()
     {
-        SpawnNewPlayer();
+        if (availablePLayers.Count > 0 && enemies.Count > 0)
+            GameUI.instance.nextPlayerButton.SetActive(true);
+        else
+        {
+            GameUI.instance.SetEndScreen(enemies.Count == 0);
+        }
     }
 
     public void DestroyEnemy(Enemy enemy)
