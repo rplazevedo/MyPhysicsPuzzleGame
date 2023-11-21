@@ -21,13 +21,58 @@ public class PlayerLauncher : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        cam = Camera.main
+        cam = Camera.main;
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        if (player == null)
+        {
+            return;
+        }
+        if (InputDown() && player.launching == false)
+        {
+            Vector3 touchWorldPosition;
+
+            if(Input.touchCount > 0)
+            {
+                touchWorldPosition = cam.ScreenToWorldPoint(Input.touches[0].position);
+            }
+            else
+            {
+                touchWorldPosition = cam.ScreenToWorldPoint(Input.mousePosition);
+            }
+            touchWorldPosition.z = 0;
+
+            if(Vector3.Distance(touchWorldPosition, player.transform.position) <= 3.0f)
+            {
+                holdingPlayer = true;
+            }
+        }
+
+        if(InputUp() && holdingPlayer)
+        {
+            holdingPlayer = false;
+            player.Launch(playerStartPos.position - player.transform.position);
+        }
+
+        if (holdingPlayer && player.launching == false)
+        {
+            Vector3 newPos;
+
+            if(Input.touchCount>0) 
+            {
+                newPos = cam.ScreenToWorldPoint(Input.touches[0].position);
+            }
+            else
+            {
+                newPos = cam.ScreenToWorldPoint(Input.mousePosition);
+            }
+
+            newPos.z = 0;
+            player.transform.position = newPos;
+        }
     }
 
     bool InputDown()
