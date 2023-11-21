@@ -103,4 +103,10 @@ public class PlayerLauncher : MonoBehaviour
 
         return false;
     }
+
+    public void SetNewPLayer (GameObject playerPrefab)
+    {
+        player = Instantiate(playerPrefab, playerStartPos.position, Quaternion.identity).GetComponent<Player>();
+        CameraController.instance.SetPlayer(player);
+    }
 }
